@@ -31,7 +31,7 @@ public class Home extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     Button startGame;
-    boolean turn = true;
+     int turn;
     private RadioGroup radioGroup;
     private RadioButton radioButton;
     private EditText firstPlayer,secondPlayer;
@@ -89,16 +89,20 @@ public class Home extends Fragment {
         firstPlayer = (EditText) getActivity().findViewById(R.id.first_player);
         secondPlayer = (EditText)getActivity().findViewById(R.id.second_player);
         startGame = (Button) getActivity().findViewById(R.id.home_button);
-        radioGroup = (RadioGroup)getActivity().findViewById(R.id.radioGroup);
+        radioGroup = (RadioGroup)getActivity().findViewById(R.id.radio_group);
 
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(mydb.insertPlayers(firstPlayer.getText().toString(),secondPlayer.getText().toString())) comm.fragment_selector(2);
-                int selectedId=radioGroup.getCheckedRadioButtonId();
-                if(selectedId == R.id.radioButton_o)
-                    turn  = false;
-                comm.setTurn(turn);
+
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+                if(selectedId == R.id.radioButton_x) {
+                    turn = 1;
+                }else{
+                    turn = 0;
+                }
+
+                if(mydb.insertPlayers(firstPlayer.getText().toString(),secondPlayer.getText().toString(),turn)) comm.fragment_selector(2);
             }
         });
     }

@@ -2,6 +2,7 @@ package layout;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,7 +40,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private TextView first_player,first_player_score,second_player,second_player_score,game_result,player_turn;
     private ImageButton ibutton_1,ibutton_2,ibutton_3,ibutton_4,ibutton_5,ibutton_6,ibutton_7,ibutton_8,ibutton_9;
-    int arr[][];
+    int arr[][],turn_no = 0,flag = 0;
     boolean mturn,selectedTurn;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
@@ -107,14 +108,18 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        second_player_score = (TextView)getActivity().findViewById(R.id.second_player_score);
        game_result = (TextView)getActivity().findViewById(R.id.game_result);
        player_turn = (TextView)getActivity().findViewById(R.id.player_turn);
-       replay = (Button)getActivity().findViewById(R.id.replay);
+       replay = (Button)getActivity().findViewById(R.id.replay_button);
        Cursor rs = mydb.getData(1);
        rs.moveToFirst();
        first_player.setText(rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER)));
        second_player.setText(rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER)));
        mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
        msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
-       mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
+
+               mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
+       turn_no = rs.getInt(rs.getColumnIndex(DBHelper.TURN));
+       if( turn_no == 0) mturn = false;
+       else mturn = true;
        first_player_score.setText(String.format("%d",mfirst_player_score));
        second_player_score.setText(String.format("%d", msecond_player_score));
        ibutton_1 = (ImageButton) getActivity().findViewById(R.id.row1col1);
@@ -143,15 +148,10 @@ public class Mplayground extends Fragment implements View.OnClickListener {
            }
        }
    }
-    public void setTurn(boolean turn){
-        if(turn) mturn = true;
-        else mturn = false;
-        selectedTurn = mturn;
-
-    }
     public void checkResult(){
+
         int j = 0;
-        int flag = 0;
+
         for(int i=0;i<3;i++){
             int num = arr[i][0];
             if(num != 0) {
@@ -184,16 +184,35 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         }
         if(flag != 0) {
             if (selectedTurn) {
-                game_result.setText(first_player.getText().toString() + "wins");
+                game_result.setText(first_player.getText().toString() + "  wins");
                 mfirst_player_score++;
-                first_player_score.setText(String.format("%d",mfirst_player_score));
+                first_player_score.setText(String.format("%d", mfirst_player_score));
+
 
             } else {
-                game_result.setText(second_player.getText().toString() + "wins");
+                game_result.setText(second_player.getText().toString() + "  wins");
                 msecond_player_score++;
                 second_player_score.setText(String.format("%d",msecond_player_score));
 
+
             }
+            if(mfirst_player_score > msecond_player_score){
+                second_player_score.setTextColor(Color.RED);
+                first_player_score.setTextColor(Color.GREEN);
+            }
+            else{
+                second_player_score.setTextColor(Color.GREEN);
+                first_player_score.setTextColor(Color.RED);
+            }
+
+            for(int i =0;i<3;i++){
+                for(int k=0;k<3;k++){
+                    arr[i][k] = 3;
+                }
+            }
+        }else if(turn_no == 9){
+            game_result.setText("Game Ties");
+            mties++;
         }
     }
 
@@ -223,6 +242,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        turn_no++;
         switch (v.getId()){
             case R.id.row1col1:
                 if(arr[0][0] == 0){
@@ -260,7 +280,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                 if(arr[0][2] == 0){
                     if(mturn){
                         ibutton_3.setBackgroundResource(R.drawable.ic_x);
-                        arr[0][3] = 1;
+                        arr[0][2] = 1;
                         mturn = false;
                     }
                     else{
@@ -368,8 +388,8 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
                 }
                 break;
-            case R.id.replay:
-                replay();
+            case R.id.replay_button:
+                replayGame();
                 break;
             default:
 
@@ -377,17 +397,18 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         }
         if(selectedTurn) {
             if (mturn)
-                player_turn.setText(first_player.getText().toString() + " turn");
-            else player_turn.setText(second_player.getText().toString() + " turn");
+                player_turn.setText(first_player.getText().toString() + "'s turn");
+            else player_turn.setText(second_player.getText().toString() + "'s turn");
         }else{
             if (!mturn)
-                player_turn.setText(first_player.getText().toString() + " turn");
-            else player_turn.setText(second_player.getText().toString() + " turn");
+                player_turn.setText(first_player.getText().toString() + "'s turn");
+            else player_turn.setText(second_player.getText().toString() + "'s turn");
         }
-        checkResult();
+        if(turn_no > 4 && flag == 0) checkResult();
     }
-    public void replay(){
+    public void replayGame(){
         mturn = selectedTurn;
+        turn_no = 0;
         ibutton_1.setBackgroundResource(R.drawable.ic_blank);
         ibutton_2.setBackgroundResource(R.drawable.ic_blank);
         ibutton_3.setBackgroundResource(R.drawable.ic_blank);

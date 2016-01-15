@@ -44,7 +44,7 @@
             android:layout_weight="30"/>
         <RadioGroup
             android:layout_weight="70"
-            android:id="@+id/radioGroup"
+            android:id="@+id/radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -57,7 +57,8 @@
         android:id="@+id/radioButton_x"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-                android:checked="true" />
+        android:checked="true"
+                />
 
     <RadioButton
 

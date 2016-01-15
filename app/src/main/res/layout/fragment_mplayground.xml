@@ -20,6 +20,7 @@
             android:textColor="@color/playerName"
             android:text="player:"/>
         <TextView
+            android:paddingLeft="30dp"
             android:id="@+id/first_player_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,7 +30,9 @@
         android:id="@+id/player_turn"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="top|center" />
+        android:gravity="top|center"
+        android:paddingTop="@dimen/activity_horizontal_margin"
+        android:textColor="@color/outerBox"/>
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -48,7 +51,8 @@
             android:id="@+id/second_player_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/gameresult"/>
+            android:textColor="@color/gameresult"
+            android:paddingLeft="30dp"/>
     </LinearLayout>
 <FrameLayout
     android:layout_width="220dp"
@@ -178,13 +182,14 @@
 
 </FrameLayout>
     <Button
-        android:id="@+id/replay"
+        android:id="@+id/replay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="Replay"
         android:layout_gravity="bottom|left"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"
+        android:clickable="true"
         />
     <TextView
         android:id="@+id/game_result"

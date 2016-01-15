@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
 import com.wordpress.milindkrohit.zerocrosstictactoe.R;
+import com.wordpress.milindkrohit.zerocrosstictactoe.mfragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,12 +35,12 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     private String mParam1;
     private String mParam2;
     public DBHelper mydb;
-
+    mfragment comm;
     private OnFragmentInteractionListener mListener;
     private TextView first_player,first_player_score,second_player,second_player_score,game_result,player_turn;
     private ImageButton ibutton_1,ibutton_2,ibutton_3,ibutton_4,ibutton_5,ibutton_6,ibutton_7,ibutton_8,ibutton_9;
     int arr[][];
-    boolean mturn = true;
+    boolean mturn,selectedTurn;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
     public Mplayground() {
@@ -85,6 +86,17 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         super.onActivityCreated(savedInstanceState);
         mydb = new DBHelper(getActivity());
         init();
+        comm = (mfragment) getActivity();
+        if(selectedTurn) {
+            if (mturn)
+                player_turn.setText(first_player.getText().toString() + " turn");
+            else player_turn.setText(second_player.getText().toString() + " turn");
+        }else{
+            if (!mturn)
+                player_turn.setText(first_player.getText().toString() + " turn");
+            else player_turn.setText(second_player.getText().toString() + " turn");
+        }
+
 
 
     }
@@ -95,6 +107,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        second_player_score = (TextView)getActivity().findViewById(R.id.second_player_score);
        game_result = (TextView)getActivity().findViewById(R.id.game_result);
        player_turn = (TextView)getActivity().findViewById(R.id.player_turn);
+       replay = (Button)getActivity().findViewById(R.id.replay);
        Cursor rs = mydb.getData(1);
        rs.moveToFirst();
        first_player.setText(rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER)));
@@ -133,7 +146,55 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     public void setTurn(boolean turn){
         if(turn) mturn = true;
         else mturn = false;
+        selectedTurn = mturn;
 
+    }
+    public void checkResult(){
+        int j = 0;
+        int flag = 0;
+        for(int i=0;i<3;i++){
+            int num = arr[i][0];
+            if(num != 0) {
+                for (j = 1; j < 3; j++) {
+                    if (num != arr[i][j]) break;
+                }
+            }
+            if(j == 3){
+                flag = arr[i][j - 1];
+                break;
+            }
+        }
+        for(int i=0;i<3;i++){
+            int num = arr[0][i];
+            if(num != 0) {
+                for (j = 1; j < 3; j++) {
+                    if (num != arr[j][i]) break;
+                }
+            }
+            if(j == 3){
+                flag = arr[j - 1][i];
+                break;
+            }
+        }
+        if(arr[2][0] == arr[1][1]  && arr[1][1] == arr[0][2]){
+            flag = arr[1][1];
+        }
+        if(arr[0][0] == arr[1][1]  && arr[1][1] == arr[2][2]){
+            flag = arr[1][1];
+        }
+        if(flag != 0) {
+            if (selectedTurn) {
+                game_result.setText(first_player.getText().toString() + "wins");
+                mfirst_player_score++;
+                first_player_score.setText(String.format("%d",mfirst_player_score));
+
+            } else {
+                game_result.setText(second_player.getText().toString() + "wins");
+                msecond_player_score++;
+                second_player_score.setText(String.format("%d",msecond_player_score));
+
+            }
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -307,9 +368,40 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
                 }
                 break;
+            case R.id.replay:
+                replay();
+                break;
             default:
 
 
+        }
+        if(selectedTurn) {
+            if (mturn)
+                player_turn.setText(first_player.getText().toString() + " turn");
+            else player_turn.setText(second_player.getText().toString() + " turn");
+        }else{
+            if (!mturn)
+                player_turn.setText(first_player.getText().toString() + " turn");
+            else player_turn.setText(second_player.getText().toString() + " turn");
+        }
+        checkResult();
+    }
+    public void replay(){
+        mturn = selectedTurn;
+        ibutton_1.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_2.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_3.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_4.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_5.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_6.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_7.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_8.setBackgroundResource(R.drawable.ic_blank);
+        ibutton_9.setBackgroundResource(R.drawable.ic_blank);
+        game_result.setText("");
+        for(int i=0;i<3;i++){
+            for(int j=0;j<3;j++){
+                arr[i][j] = 0;
+            }
         }
     }
 

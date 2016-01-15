@@ -80,6 +80,12 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     }
 
     @Override
+    public void setTurn(boolean turn) {
+        layout.Mplayground obj = new layout.Mplayground();
+        obj.setTurn(turn);
+    }
+
+    @Override
     public void onFragmentInteraction(Uri uri) {
 
     }

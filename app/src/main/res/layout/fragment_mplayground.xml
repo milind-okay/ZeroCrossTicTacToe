@@ -51,74 +51,129 @@
             android:textColor="@color/gameresult"/>
     </LinearLayout>
 <FrameLayout
-    android:layout_width="162dp"
-    android:layout_height="169dp"
-    android:layout_gravity="center">
+    android:layout_width="220dp"
+    android:layout_height="220dp"
+    android:layout_gravity="center"
+    android:background="@color/outerBox">
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top">
     <ImageButton
         android:id="@+id/row1col1"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="start|top"/>
+        />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|top"
+        >
     <ImageButton
         android:id="@+id/row1col2"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center|top"/>
+       />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|top">
     <ImageButton
         android:id="@+id/row1col3"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|top"/>
+       />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|center_vertical">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row2col1"
-        android:background="@drawable/ic_home"
-        android:layout_gravity="left|center_vertical" />
+        android:background="@drawable/ic_blank"
+         />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row2col2"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
+ />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
 
-        android:layout_gravity="center" />
+        android:layout_gravity="right|center_vertical">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row2col3"
-        android:background="@drawable/ic_home"
-
-        android:layout_gravity="right|center_vertical" />
+        android:background="@drawable/ic_blank"
+ />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left|bottom">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row3col1"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
 
-        android:layout_gravity="left|bottom" />
-
+    />
+</LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|bottom">
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row3col2"
-        android:background="@drawable/ic_home"
+        android:background="@drawable/ic_blank"
 
-        android:layout_gravity="center_horizontal|bottom" />
+       />
+    </LinearLayout>
+    <LinearLayout
+        android:background="@color/inerBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="right|bottom">
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/row3col3"
-        android:background="@drawable/ic_home"
-
-        android:layout_gravity="right|bottom" />
+        android:background="@drawable/ic_blank"
+ />
+    </LinearLayout>
 
 </FrameLayout>
     <Button

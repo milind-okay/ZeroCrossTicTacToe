@@ -2,6 +2,7 @@ package layout;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
@@ -22,7 +24,7 @@ import com.wordpress.milindkrohit.zerocrosstictactoe.R;
  * Use the {@link Mplayground#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Mplayground extends Fragment {
+public class Mplayground extends Fragment implements View.OnClickListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -35,6 +37,9 @@ public class Mplayground extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private TextView first_player,first_player_score,second_player,second_player_score,game_result,player_turn;
+    private ImageButton ibutton_1,ibutton_2,ibutton_3,ibutton_4,ibutton_5,ibutton_6,ibutton_7,ibutton_8,ibutton_9;
+    int arr[][];
+    boolean mturn = true;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
     public Mplayground() {
@@ -79,23 +84,57 @@ public class Mplayground extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mydb = new DBHelper(getActivity());
-        first_player = (TextView)getActivity().findViewById(R.id.first_player_name);
-        second_player = (TextView)getActivity().findViewById(R.id.second_player_name);
-        first_player_score = (TextView)getActivity().findViewById(R.id.first_player_score);
-        second_player_score = (TextView)getActivity().findViewById(R.id.second_player_score);
-        game_result = (TextView)getActivity().findViewById(R.id.game_result);
-        player_turn = (TextView)getActivity().findViewById(R.id.player_turn);
-        Cursor rs = mydb.getData(1);
-        rs.moveToFirst();
-        first_player.setText(rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER)));
-        second_player.setText(rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER)));
-        mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
-        msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
-        mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
-        first_player_score.setText(String.format("%d",mfirst_player_score));
-        second_player_score.setText(String.format("%d", msecond_player_score));
-    }
+        init();
 
+
+    }
+   public void init(){
+       first_player = (TextView)getActivity().findViewById(R.id.first_player_name);
+       second_player = (TextView)getActivity().findViewById(R.id.second_player_name);
+       first_player_score = (TextView)getActivity().findViewById(R.id.first_player_score);
+       second_player_score = (TextView)getActivity().findViewById(R.id.second_player_score);
+       game_result = (TextView)getActivity().findViewById(R.id.game_result);
+       player_turn = (TextView)getActivity().findViewById(R.id.player_turn);
+       Cursor rs = mydb.getData(1);
+       rs.moveToFirst();
+       first_player.setText(rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER)));
+       second_player.setText(rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER)));
+       mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
+       msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
+       mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
+       first_player_score.setText(String.format("%d",mfirst_player_score));
+       second_player_score.setText(String.format("%d", msecond_player_score));
+       ibutton_1 = (ImageButton) getActivity().findViewById(R.id.row1col1);
+       ibutton_2 = (ImageButton) getActivity().findViewById(R.id.row1col2);
+       ibutton_3 = (ImageButton) getActivity().findViewById(R.id.row1col3);
+       ibutton_4 = (ImageButton) getActivity().findViewById(R.id.row2col1);
+       ibutton_5 = (ImageButton) getActivity().findViewById(R.id.row2col2);
+       ibutton_6 = (ImageButton) getActivity().findViewById(R.id.row2col3);
+       ibutton_7 = (ImageButton) getActivity().findViewById(R.id.row3col1);
+       ibutton_8 = (ImageButton) getActivity().findViewById(R.id.row3col2);
+       ibutton_9 = (ImageButton) getActivity().findViewById(R.id.row3col3);
+       ibutton_1.setOnClickListener(this);
+       ibutton_2.setOnClickListener(this);
+       ibutton_3.setOnClickListener(this);
+       ibutton_4.setOnClickListener(this);
+       ibutton_5.setOnClickListener(this);
+       ibutton_6.setOnClickListener(this);
+       ibutton_7.setOnClickListener(this);
+       ibutton_8.setOnClickListener(this);
+       ibutton_9.setOnClickListener(this);
+
+       arr = new int[3][3];
+       for(int i =0;i<3;i++){
+           for(int j=0;j<3;j++){
+               arr[i][j] = 0;
+           }
+       }
+   }
+    public void setTurn(boolean turn){
+        if(turn) mturn = true;
+        else mturn = false;
+
+    }
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
@@ -119,6 +158,159 @@ public class Mplayground extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.row1col1:
+                if(arr[0][0] == 0){
+                    if(mturn){
+                        ibutton_1.setBackgroundResource(R.drawable.ic_x);
+                        arr[0][0] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_1.setBackgroundResource(R.drawable.ic_o);
+                        arr[0][0] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row1col2:
+                if(arr[0][1] == 0){
+                    if(mturn){
+                        ibutton_2.setBackgroundResource(R.drawable.ic_x);
+                        arr[0][1] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_2.setBackgroundResource(R.drawable.ic_o);
+                        arr[0][1] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row1col3:
+                if(arr[0][2] == 0){
+                    if(mturn){
+                        ibutton_3.setBackgroundResource(R.drawable.ic_x);
+                        arr[0][3] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_3.setBackgroundResource(R.drawable.ic_o);
+                        arr[0][2] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row2col1:
+                if(arr[1][0] == 0){
+                    if(mturn){
+                        ibutton_4.setBackgroundResource(R.drawable.ic_x);
+                        arr[1][0] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_4.setBackgroundResource(R.drawable.ic_o);
+                        arr[1][0] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row2col2:
+                if(arr[1][1] == 0){
+                    if(mturn){
+                        ibutton_5.setBackgroundResource(R.drawable.ic_x);
+                        arr[1][1] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_5.setBackgroundResource(R.drawable.ic_o);
+                        arr[1][1] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row2col3:
+                if(arr[1][2] == 0){
+                    if(mturn){
+                        ibutton_6.setBackgroundResource(R.drawable.ic_x);
+                        arr[1][2] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_6.setBackgroundResource(R.drawable.ic_o);
+                        arr[1][2] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row3col1:
+                if(arr[2][0] == 0){
+                    if(mturn){
+                        ibutton_7.setBackgroundResource(R.drawable.ic_x);
+                        arr[2][0] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_7.setBackgroundResource(R.drawable.ic_o);
+                        arr[2][0] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row3col2:
+                if(arr[2][1] == 0){
+                    if(mturn){
+                        ibutton_8.setBackgroundResource(R.drawable.ic_x);
+                        arr[2][1] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_8.setBackgroundResource(R.drawable.ic_o);
+                        arr[2][1] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            case R.id.row3col3:
+                if(arr[2][2] == 0){
+                    if(mturn){
+                        ibutton_9.setBackgroundResource(R.drawable.ic_x);
+                        arr[2][2] = 1;
+                        mturn = false;
+                    }
+                    else{
+                        ibutton_9.setBackgroundResource(R.drawable.ic_o);
+                        arr[2][2] = 2;
+                        mturn = true;
+                    }
+
+
+                }
+                break;
+            default:
+
+
+        }
     }
 
     /**

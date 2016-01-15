@@ -62,9 +62,10 @@
         android:layout_gravity="start|top">
     <ImageButton
         android:id="@+id/row1col1"
-        android:background="@drawable/ic_blank"
+        android:background="@drawable/ic_o"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="true"
         />
     </LinearLayout>
     <LinearLayout

@@ -1,5 +1,6 @@
 package com.wordpress.milindkrohit.zerocrosstictactoe;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.net.Uri;
@@ -14,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment{
 
@@ -25,7 +27,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        ImageButton fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -50,7 +52,13 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            return true;
+        }else if(id == R.id.help){
+            showHelp();
+            return true;
+        }else if(id  == R.id.rate_us){
+            rate_us();
             return true;
         }
 
@@ -84,6 +92,15 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    private void showHelp() {
+        String str = "https://www.milindkrohit.wordpress.com/zerocross";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+    }
+
+    private void rate_us() {
+        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe\"";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
     }
 
 

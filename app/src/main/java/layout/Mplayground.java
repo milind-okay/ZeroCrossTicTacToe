@@ -120,6 +120,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        turn_no = rs.getInt(rs.getColumnIndex(DBHelper.TURN));
        if( turn_no == 0) mturn = false;
        else mturn = true;
+       selectedTurn = mturn;
        first_player_score.setText(String.format("%d",mfirst_player_score));
        second_player_score.setText(String.format("%d", msecond_player_score));
        ibutton_1 = (ImageButton) getActivity().findViewById(R.id.row1col1);
@@ -140,6 +141,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        ibutton_7.setOnClickListener(this);
        ibutton_8.setOnClickListener(this);
        ibutton_9.setOnClickListener(this);
+       replay.setOnClickListener(this);
 
        arr = new int[3][3];
        for(int i =0;i<3;i++){
@@ -242,7 +244,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        turn_no++;
+
         switch (v.getId()){
             case R.id.row1col1:
                 if(arr[0][0] == 0){
@@ -256,6 +258,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[0][0] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -272,6 +275,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[0][1] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -288,6 +292,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[0][2] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -304,6 +309,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[1][0] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -320,6 +326,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[1][1] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -336,6 +343,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[1][2] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -352,6 +360,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[2][0] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -368,6 +377,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[2][1] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -384,6 +394,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                         arr[2][2] = 2;
                         mturn = true;
                     }
+                    turn_no++;
 
 
                 }
@@ -418,6 +429,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         ibutton_7.setBackgroundResource(R.drawable.ic_blank);
         ibutton_8.setBackgroundResource(R.drawable.ic_blank);
         ibutton_9.setBackgroundResource(R.drawable.ic_blank);
+        flag = 0;
         game_result.setText("");
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){

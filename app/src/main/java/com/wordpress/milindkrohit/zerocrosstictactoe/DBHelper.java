@@ -53,7 +53,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("first_player_score",0);
         contentValues.put("second_player_score",0);
         contentValues.put("ties",0);
-        contentValues.put("turn",turn);
+        contentValues.put("turn", turn);
 
 
         db.insert("score", null, contentValues);
@@ -70,6 +70,18 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         int numRows = (int) DatabaseUtils.queryNumEntries(db, TABLE_NAME);
         return numRows;
+    }
+    public boolean updatePlayer(Integer id,String first_player,String second_player,int turn){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("first_player",first_player);
+        contentValues.put("second_player",second_player);
+        contentValues.put("first_player_score",0);
+        contentValues.put("second_player_score",0);
+        contentValues.put("ties",0);
+        contentValues.put("turn",turn);
+        db.update("score", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        return true;
     }
 
     public boolean updateScore (Integer id, int first_player_score,int second_player_score,int ties)

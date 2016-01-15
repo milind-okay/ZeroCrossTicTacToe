@@ -20,7 +20,7 @@
             android:textColor="@color/playerName"
             android:text="player:"/>
         <TextView
-            android:paddingLeft="30dp"
+            android:paddingLeft="20dp"
             android:id="@+id/first_player_score"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/gameresult"
-            android:paddingLeft="30dp"/>
+            android:paddingLeft="20dp"/>
     </LinearLayout>
 <FrameLayout
     android:layout_width="220dp"
@@ -185,7 +185,7 @@
         android:id="@+id/replay_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Replay"
+        android:text="Replay"
         android:layout_gravity="bottom|left"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="30dp"

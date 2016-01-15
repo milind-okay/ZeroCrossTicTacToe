@@ -1,7 +1,15 @@
 <resources>
     <string name="app_name">Zero Cross Tic Tac Toe</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_about">Settings</string>
+     <string name="about_d">Sudoku Solver Advanced \n
+        with this you can solve all 9x9 grid sudoku puzzles on your phone fast and easily. Just enter values according to the problem and click "Result" button.\n
+    -Nice UI and controls are placed for optimal use.
+    </string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Enter Names and get started</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="action_rateus">Rate this App</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_help">help</string>
 </resources>

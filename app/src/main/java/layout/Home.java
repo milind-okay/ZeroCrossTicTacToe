@@ -94,6 +94,7 @@ public class Home extends Fragment {
         radioGroup = (RadioGroup)getActivity().findViewById(R.id.radio_group);
         first_player_name = firstPlayer.getText().toString();
         second_player_name = secondPlayer.getText().toString();
+
         startGame.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,17 +106,42 @@ public class Home extends Fragment {
                     turn = 0;
                 }
                 int pairNumber = mydb.numberOfRows();
+                int flag = 0;
 
 
-                if(pairNumber == 0) {
-                    if (mydb.insertPlayers(firstPlayer.getText().toString(), secondPlayer.getText().toString(), turn))
+                for(int i=1;i<=pairNumber;i++){
+                    Cursor rs = mydb.getData(i);
+                    rs.moveToFirst();
+
+                    if(checkPair(rs)) {
+                        flag = i;
+                        break;
+                    }
+                    if(!rs.isClosed())
+                    rs.close();
+
+                }
+
+
+                if(pairNumber == 0 || flag == 0) {
+                    if(pairNumber != 0) mydb.updatepair(1,pairNumber + 1);
+                    if (mydb.insertPlayers(firstPlayer.getText().toString(), secondPlayer.getText().toString(), turn,pairNumber + 1))
                         comm.fragment_selector(2);
-                }else{
-                    if (mydb.updatePlayer(1,firstPlayer.getText().toString(), secondPlayer.getText().toString(), turn))
+                }else {
+                    if (mydb.updatepair(1,flag))
                         comm.fragment_selector(2);
                 }
                 }
         });
+    }
+    public boolean checkPair(Cursor rs){
+        String firstP,secondP;
+        firstP = rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER));
+        secondP = rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER));
+        if((firstPlayer.getText().toString().equalsIgnoreCase(firstP) && secondPlayer.getText().toString().equalsIgnoreCase(secondP)) ||
+                (firstPlayer.getText().toString().equalsIgnoreCase(secondP) && secondPlayer.getText().toString().equalsIgnoreCase(firstP))){
+            return true;
+        }else return false;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

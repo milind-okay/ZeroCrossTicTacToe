@@ -21,6 +21,7 @@ public class DBHelper extends SQLiteOpenHelper {
     public static final String SECOND_PLAYER_SCORE = "second_player_score";
     public static final String TIES = "ties";
     public static final String TURN = "turn";
+    public static final String PAIR = "pairno";
     private HashMap hp;
 
     public DBHelper(Context context)
@@ -33,7 +34,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
         db.execSQL(
                 "create table score " +
-                        "(id integer primary key, first_player text,first_player_score integer ,second_player text,second_player_score integer,ties integer,turn integer)"
+                        "(id integer primary key, first_player text,first_player_score integer ,second_player text,second_player_score integer,ties integer,turn integer,pairno integer)"
         );
     }
 
@@ -44,7 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertPlayers(String first_player, String second_player,int turn)
+    public boolean insertPlayers(String first_player, String second_player,int turn,int pair_no)
     {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -54,7 +55,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("second_player_score",0);
         contentValues.put("ties",0);
         contentValues.put("turn", turn);
-
+        contentValues.put("pairno", pair_no);
 
         db.insert("score", null, contentValues);
         return true;
@@ -80,6 +81,15 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("second_player_score",0);
         contentValues.put("ties",0);
         contentValues.put("turn",turn);
+        db.update("score", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
+        return true;
+    }
+    public boolean updatepair (Integer id, int pair_no)
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put("pairno",pair_no);
         db.update("score", contentValues, "id = ? ", new String[] { Integer.toString(id) } );
         return true;
     }

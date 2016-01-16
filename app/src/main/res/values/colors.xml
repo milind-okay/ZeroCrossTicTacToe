@@ -8,4 +8,8 @@
     <color name="lowScore">#F00000</color>
     <color name="outerBox">#000000</color>
     <color name="inerBox">#FFFFFF</color>
+    <color name="scoreboard">#0000F1</color>
+    <color name="scoreboard_text">#A90021</color>
+    <color name="scoreboard_odd">#def0fb</color>
+    <color name="scoreboard_even">#F0F2F0</color>
 </resources>

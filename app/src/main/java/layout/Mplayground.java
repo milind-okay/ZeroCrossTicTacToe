@@ -41,7 +41,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private TextView first_player,first_player_score,second_player,second_player_score,game_result,player_turn;
     private ImageButton ibutton_1,ibutton_2,ibutton_3,ibutton_4,ibutton_5,ibutton_6,ibutton_7,ibutton_8,ibutton_9;
-    int arr[][],turn_no = 0,flag = 0;
+    int arr[][],turn_no = 0,flag = 0,pairNo;
     boolean mturn,selectedTurn;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
@@ -109,6 +109,11 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        replay = (Button)getActivity().findViewById(R.id.replay_button);
        Cursor rs = mydb.getData(1);
        rs.moveToFirst();
+       pairNo = rs.getInt(rs.getColumnIndex(DBHelper.PAIR));
+       if(!rs.isClosed())
+       rs.close();
+       rs = mydb.getData(pairNo);
+       rs.moveToFirst();
 
        mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
        msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
@@ -151,6 +156,8 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                arr[i][j] = 0;
            }
        }
+       if(!rs.isClosed())
+       rs.close();
    }
     public void checkResult(){
 
@@ -455,6 +462,10 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                 arr[i][j] = 0;
             }
         }
+       Cursor rs = mydb.getData(pairNo);
+        rs.moveToFirst();
+        mydb.updateScore(pairNo,mfirst_player_score,msecond_player_score,mties);
+        if(!rs.isClosed()) rs.close();
     }
 
     /**

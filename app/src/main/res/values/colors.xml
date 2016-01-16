@@ -6,4 +6,6 @@
     <color name="gameresult">#00F000</color>
     <color name="playerName">#324512</color>
     <color name="lowScore">#F00000</color>
+    <color name="outerBox">#000000</color>
+    <color name="inerBox">#FFFFFF</color>
 </resources>

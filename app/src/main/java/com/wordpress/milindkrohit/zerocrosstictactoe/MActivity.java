@@ -1,5 +1,6 @@
 package com.wordpress.milindkrohit.zerocrosstictactoe;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.net.Uri;
@@ -14,8 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
-public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment{
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
+
+public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
+        layout.aboutus.OnFragmentInteractionListener{
 
 
     @Override
@@ -24,12 +30,16 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         setContentView(R.layout.activity_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
+        AdBuddiz.setLogLevel(AdBuddizLogLevel.Info);
+        AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
+        AdBuddiz.cacheAds(this);
+        AdBuddiz.RewardedVideo.fetch(this);
+        ImageButton fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment_selector(1);
+                fabonclick();
             }
         });
         fragment_home();
@@ -41,6 +51,13 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         getMenuInflater().inflate(R.menu.menu_m, menu);
         return true;
     }
+    public void fabonclick(){
+        if (AdBuddiz.RewardedVideo.isReadyToShow(this)) { // this = current Activity
+            AdBuddiz.RewardedVideo.show(this);
+        }
+
+        fragment_selector(1);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -50,7 +67,14 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            fragment_selector(3);
+            return true;
+        }else if(id == R.id.help){
+            showHelp();
+            return true;
+        }else if(id  == R.id.rate_us){
+            rate_us();
             return true;
         }
 
@@ -67,11 +91,22 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     @Override
     public void fragment_selector(int fragmnet_id){
         Fragment new_fragment;
-        if(fragmnet_id == 1){
-            new_fragment = new layout.Home();
-        }else{
-            new_fragment = new layout.Mplayground();
+        switch (fragmnet_id){
+            case 1:
+                new_fragment = new layout.Home();
+                break;
+            case 2:
+                AdBuddiz.showAd(this);
+                new_fragment = new layout.Mplayground();
+
+                break;
+            case 3:
+                new_fragment = new layout.aboutus();
+                break;
+            default:
+                new_fragment = new layout.Home();
         }
+
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction= manager.beginTransaction();
@@ -79,9 +114,20 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         fragmentTransaction.commit();
     }
 
+
+
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+    private void showHelp() {
+        String str = "https://www.milindkrohit.wordpress.com/zerocross";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+    }
+
+    private void rate_us() {
+        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe\"";
+        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
     }
 
 

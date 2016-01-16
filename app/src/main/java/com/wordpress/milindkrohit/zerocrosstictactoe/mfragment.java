@@ -5,4 +5,5 @@ package com.wordpress.milindkrohit.zerocrosstictactoe;
  */
 public interface mfragment {
     public void fragment_selector(int fragmnet_id);
+
 }

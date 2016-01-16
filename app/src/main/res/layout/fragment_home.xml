@@ -20,11 +20,13 @@
         android:layout_height="wrap_content"
         android:id="@+id/first_player"
         android:layout_below="@id/header"
+        android:singleLine="true"
         android:hint="First player"/>
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/second_player"
+        android:singleLine="true"
         android:layout_below="@id/first_player"
         android:hint="Second player"/>
 
@@ -41,26 +43,35 @@
             android:layout_height="wrap_content"
             android:text="Start Piece:"
             android:gravity="center"
-            android:layout_weight="20"/>
+            android:layout_weight="30"/>
+        <RadioGroup
+            android:layout_weight="70"
+            android:id="@+id/radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
     <RadioButton
-        android:layout_weight="40"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="X"
-        android:id="@+id/radioButton"
+        android:id="@+id/radioButton_x"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true"
-                android:checked="true" />
+        android:checked="true"
+                />
 
     <RadioButton
-        android:layout_weight="40"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="O"
-        android:id="@+id/radioButton2"
+        android:id="@+id/radioButton_o"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
+        </RadioGroup>
     </LinearLayout>
     <Button
         android:id="@+id/home_button"

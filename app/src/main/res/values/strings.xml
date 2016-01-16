@@ -1,7 +1,16 @@
 <resources>
     <string name="app_name">Zero Cross Tic Tac Toe</string>
-    <string name="action_settings">Settings</string>
+    <string name="action_about">Settings</string>
+     <string name="about_d"> Tic Tac Toe or alternately called Xs and Os \n
+         is game for two players, X and O, who take turns marking the spaces in a 3×3 grid.
+         The player who succeeds in placing three of their marks in a horizontal, vertical, or diagonal row wins the game.
+
+    </string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hello_blank_fragment">Enter Names and get started</string>
+    <string name="title_activity_splash">Splash</string>
+    <string name="action_rateus">Rate this App</string>
+    <string name="action_favorite">Favorite</string>
+    <string name="action_help">help</string>
 </resources>

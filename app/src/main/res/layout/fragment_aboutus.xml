@@ -74,7 +74,7 @@
             />
 
     </LinearLayout>
-    <com.google.android.gms.ads.AdView
+  <!--  <com.google.android.gms.ads.AdView
         android:id="@+id/adView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -83,5 +83,5 @@
         android:layout_gravity="top"
         ads:adSize="BANNER"
         ads:adUnitId="@string/ad_about">
-    </com.google.android.gms.ads.AdView>
+    </com.google.android.gms.ads.AdView>-->
 </RelativeLayout>

@@ -44,6 +44,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     boolean mturn,selectedTurn;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
+    String first_player_name,second_player_name;
     public Mplayground() {
         // Required empty public constructor
     }
@@ -88,15 +89,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         mydb = new DBHelper(getActivity());
         init();
         comm = (mfragment) getActivity();
-        if(selectedTurn) {
-            if (mturn)
-                player_turn.setText(first_player.getText().toString() + " turn");
-            else player_turn.setText(second_player.getText().toString() + " turn");
-        }else{
-            if (!mturn)
-                player_turn.setText(first_player.getText().toString() + " turn");
-            else player_turn.setText(second_player.getText().toString() + " turn");
-        }
+        player_turn.setText(first_player_name + " turn");
 
 
 
@@ -111,16 +104,20 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        replay = (Button)getActivity().findViewById(R.id.replay_button);
        Cursor rs = mydb.getData(1);
        rs.moveToFirst();
-       first_player.setText(rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER)));
-       second_player.setText(rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER)));
+
        mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
        msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
+       first_player_name = rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER));
+       second_player_name = rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER));
+       first_player.setText(first_player_name);
+       second_player.setText(second_player_name);
 
                mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
        turn_no = rs.getInt(rs.getColumnIndex(DBHelper.TURN));
        if( turn_no == 0) mturn = false;
        else mturn = true;
        selectedTurn = mturn;
+       turn_no = 0;
        first_player_score.setText(String.format("%d",mfirst_player_score));
        second_player_score.setText(String.format("%d", msecond_player_score));
        ibutton_1 = (ImageButton) getActivity().findViewById(R.id.row1col1);
@@ -166,6 +163,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                 break;
             }
         }
+        j = 0;
         for(int i=0;i<3;i++){
             int num = arr[0][i];
             if(num != 0) {
@@ -186,16 +184,19 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         }
         if(flag != 0) {
             if (selectedTurn) {
-                game_result.setText(first_player.getText().toString() + "  wins");
-                mfirst_player_score++;
-                first_player_score.setText(String.format("%d", mfirst_player_score));
+                if(flag == 1) {
+                    firstPlayerWins();
+                }else{
+                    secondPlayerWins();
+                }
 
 
             } else {
-                game_result.setText(second_player.getText().toString() + "  wins");
-                msecond_player_score++;
-                second_player_score.setText(String.format("%d",msecond_player_score));
-
+                if(flag == 2) {
+                    firstPlayerWins();
+                }else{
+                    secondPlayerWins();
+                }
 
             }
             if(mfirst_player_score > msecond_player_score){
@@ -217,6 +218,18 @@ public class Mplayground extends Fragment implements View.OnClickListener {
             mties++;
         }
     }
+    public  void firstPlayerWins(){
+        game_result.setText(first_player.getText().toString() + "  wins");
+        mfirst_player_score++;
+        first_player_score.setText(String.format("%d", mfirst_player_score));
+    }
+    public  void secondPlayerWins(){
+        game_result.setText(second_player.getText().toString() + "  wins");
+        msecond_player_score++;
+        second_player_score.setText(String.format("%d",msecond_player_score));
+
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {

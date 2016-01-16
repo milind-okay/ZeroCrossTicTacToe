@@ -17,7 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment{
+public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
+        layout.aboutus.OnFragmentInteractionListener{
 
 
     @Override
@@ -53,6 +54,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+            fragment_selector(3);
             return true;
         }else if(id == R.id.help){
             showHelp();
@@ -75,11 +77,20 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     @Override
     public void fragment_selector(int fragmnet_id){
         Fragment new_fragment;
-        if(fragmnet_id == 1){
-            new_fragment = new layout.Home();
-        }else{
-            new_fragment = new layout.Mplayground();
+        switch (fragmnet_id){
+            case 1:
+                new_fragment = new layout.Home();
+                break;
+            case 2:
+                new_fragment = new layout.Mplayground();
+                break;
+            case 3:
+                new_fragment = new layout.aboutus();
+                break;
+            default:
+                new_fragment = new layout.Home();
         }
+
 
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction= manager.beginTransaction();

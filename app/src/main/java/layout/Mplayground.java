@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
 import com.wordpress.milindkrohit.zerocrosstictactoe.R;
 import com.wordpress.milindkrohit.zerocrosstictactoe.mfragment;
@@ -95,6 +96,10 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
     }
    public void init(){
+       AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
+       AdBuddiz.setTestModeActive();
+       AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
+       AdBuddiz.cacheAds(getActivity());
        first_player = (TextView)getActivity().findViewById(R.id.first_player_name);
        second_player = (TextView)getActivity().findViewById(R.id.second_player_name);
        first_player_score = (TextView)getActivity().findViewById(R.id.first_player_score);
@@ -413,6 +418,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                 }
                 break;
             case R.id.replay_button:
+                AdBuddiz.showAd(getActivity());
                 replayGame();
                 break;
             default:

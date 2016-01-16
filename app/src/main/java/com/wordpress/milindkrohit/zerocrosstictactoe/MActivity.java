@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
+import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
         layout.aboutus.OnFragmentInteractionListener{
 
@@ -27,12 +29,16 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         setContentView(R.layout.activity_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
+        AdBuddiz.setTestModeActive();
+        AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
+        AdBuddiz.cacheAds(this);
+        AdBuddiz.RewardedVideo.fetch(this);
         ImageButton fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fragment_selector(1);
+                fabonclick();
             }
         });
         fragment_home();
@@ -43,6 +49,13 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_m, menu);
         return true;
+    }
+    public void fabonclick(){
+        if (AdBuddiz.RewardedVideo.isReadyToShow(this)) { // this = current Activity
+            AdBuddiz.RewardedVideo.show(this);
+        }
+
+        fragment_selector(1);
     }
 
     @Override
@@ -82,7 +95,9 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 new_fragment = new layout.Home();
                 break;
             case 2:
+                AdBuddiz.showAd(this);
                 new_fragment = new layout.Mplayground();
+
                 break;
             case 3:
                 new_fragment = new layout.aboutus();

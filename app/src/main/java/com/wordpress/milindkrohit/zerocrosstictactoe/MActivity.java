@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
         layout.aboutus.OnFragmentInteractionListener{
@@ -30,7 +31,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
-        AdBuddiz.setTestModeActive();
+        AdBuddiz.setLogLevel(AdBuddizLogLevel.Info);
         AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
         AdBuddiz.cacheAds(this);
         AdBuddiz.RewardedVideo.fetch(this);

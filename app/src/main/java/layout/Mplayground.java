@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
 import com.wordpress.milindkrohit.zerocrosstictactoe.R;
 import com.wordpress.milindkrohit.zerocrosstictactoe.mfragment;
@@ -97,7 +98,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     }
    public void init(){
        AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
-       AdBuddiz.setTestModeActive();
+       AdBuddiz.setLogLevel(AdBuddizLogLevel.Info);
        AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
        AdBuddiz.cacheAds(getActivity());
        first_player = (TextView)getActivity().findViewById(R.id.first_player_name);
@@ -241,8 +242,6 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         second_player_score.setText(String.format("%d",msecond_player_score));
 
     }
-
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

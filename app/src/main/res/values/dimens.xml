@@ -8,4 +8,5 @@
     <dimen name="scoreboard_text">20dp</dimen>
     <dimen name="scoreboard_text_right">40dp</dimen>
     <dimen name="scoreboard_top">5dp</dimen>
+    <dimen name="text_margin">16dp</dimen>
 </resources>

@@ -23,9 +23,9 @@ import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
-        layout.aboutus.OnFragmentInteractionListener,layout.Statistics.OnFragmentInteractionListener{
+        layout.aboutus.OnFragmentInteractionListener{
 
-    int fragment_id = 1;
+    int fragment_id = 1,backPress = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -82,6 +82,8 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         }else if(id == R.id.statistics){
             fragment_selector(4);
             return true;
+        }else if(id == R.id.action_contactus){
+            sendEmail();
         }
 
         return super.onOptionsItemSelected(item);
@@ -111,7 +113,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 new_fragment = new layout.aboutus();
                 break;
             case 4:
-                new_fragment = new layout.Statistics();
+                new_fragment = new layout.ListScore();
                 break;
             default:
                 new_fragment = new layout.Home();
@@ -140,9 +142,22 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     }
 
     private void rate_us() {
-        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe\"";
+        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(fragment_id == 1){
+            backPress++;
+            if(backPress == 1)  Toast.makeText(this, "press again to exit", Toast.LENGTH_SHORT).show();
+            else super.onBackPressed();
+        }else{
+            fragment_selector(1);
+        }
+    }
+
     private void sendEmail(){
 
         String info = "okay ",emailAdd;

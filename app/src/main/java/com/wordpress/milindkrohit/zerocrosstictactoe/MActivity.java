@@ -25,9 +25,10 @@ import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
         layout.aboutus.OnFragmentInteractionListener,layout.Statistics.OnFragmentInteractionListener{
 
-
+    int fragment_id = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -44,7 +45,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 fabonclick();
             }
         });
-        fragment_home();
+        if(savedInstanceState == null)  fragment_home();
     }
 
     @Override
@@ -94,9 +95,10 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         fragmentTransaction.commit();
     }
     @Override
-    public void fragment_selector(int fragmnet_id){
+    public void fragment_selector(int fragment){
         Fragment new_fragment;
-        switch (fragmnet_id){
+        fragment_id = fragment;
+        switch (fragment){
             case 1:
                 new_fragment = new layout.Home();
                 break;
@@ -122,7 +124,11 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         fragmentTransaction.commit();
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("fragment_id",fragment_id);
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {

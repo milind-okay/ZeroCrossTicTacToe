@@ -33,8 +33,7 @@ public class Home extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     Button startGame;
      int turn;
-    private RadioGroup radioGroup;
-    private RadioButton radioButton;
+
     private EditText firstPlayer,secondPlayer;
     mfragment comm;
     // TODO: Rename and change types of parameters
@@ -91,7 +90,7 @@ public class Home extends Fragment {
         firstPlayer = (EditText) getActivity().findViewById(R.id.first_player);
         secondPlayer = (EditText)getActivity().findViewById(R.id.second_player);
         startGame = (Button) getActivity().findViewById(R.id.home_button);
-        radioGroup = (RadioGroup)getActivity().findViewById(R.id.radio_group);
+
         first_player_name = firstPlayer.getText().toString();
         second_player_name = secondPlayer.getText().toString();
 
@@ -99,12 +98,6 @@ public class Home extends Fragment {
             @Override
             public void onClick(View view) {
 
-                int selectedId = radioGroup.getCheckedRadioButtonId();
-                if(selectedId == R.id.radioButton_x) {
-                    turn = 1;
-                }else{
-                    turn = 0;
-                }
                 int pairNumber = mydb.numberOfRows();
                 int flag = 0;
 
@@ -125,7 +118,7 @@ public class Home extends Fragment {
 
                 if(pairNumber == 0 || flag == 0) {
                     if(pairNumber != 0) mydb.updatepair(1,pairNumber + 1);
-                    if (mydb.insertPlayers(firstPlayer.getText().toString(), secondPlayer.getText().toString(), turn,pairNumber + 1))
+                    if (mydb.insertPlayers(firstPlayer.getText().toString(), secondPlayer.getText().toString(),pairNumber + 1))
                         comm.fragment_selector(2);
                 }else {
                     if (mydb.updatepair(1,flag))
@@ -160,6 +153,11 @@ public class Home extends Fragment {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 
     @Override

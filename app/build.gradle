@@ -8,8 +8,8 @@ android {
         applicationId "com.wordpress.milindkrohit.zerocrosstictactoe"
         minSdkVersion 9
         targetSdkVersion 23
-        versionCode 4
-        versionName "1.5.1"
+        versionCode 5
+        versionName "1.6.1"
     }
     buildTypes {
         release {

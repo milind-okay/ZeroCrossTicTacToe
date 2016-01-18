@@ -99,25 +99,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         comm = (mfragment) getActivity();
         player_turn.setText(first_player_name + " turn");
         if(savedInstanceState != null){
-            int index = 0;
-            for(int i = 0;i < 3;i++){
-                for(int j = 0;j < 3;j++){
-                    arr[i][j] = savedInstanceState.getInt(saveInstance[index]);
-                    if(arr[i][j] == 1){
-                        set_button(index,true);
-                    }else if(arr[i][j] == 2){
-                        set_button(index,false);
-                    }
-                    index++;
-                }
-            }
-            mturn = savedInstanceState.getBoolean("mturn");
-            flag =  savedInstanceState.getInt("flag");
-            turn_no =  savedInstanceState.getInt("turn_no");
-            selectedTurn = savedInstanceState.getBoolean("selectedturn");
-            mfirst_player_score = savedInstanceState.getInt("mfirst_player_score");
-            msecond_player_score = savedInstanceState.getInt("msecond_player_score");
-            ischecked = savedInstanceState.getBoolean("ischecked");
+           callSaveInstance(savedInstanceState);
         }
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -277,6 +259,27 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
+    }
+    public  void callSaveInstance(Bundle savedInstanceState){
+        int index = 0;
+        for(int i = 0;i < 3;i++){
+            for(int j = 0;j < 3;j++){
+                arr[i][j] = savedInstanceState.getInt(saveInstance[index]);
+                if(arr[i][j] == 1){
+                    set_button(index,true);
+                }else if(arr[i][j] == 2){
+                    set_button(index,false);
+                }
+                index++;
+            }
+        }
+        mturn = savedInstanceState.getBoolean("mturn");
+        flag =  savedInstanceState.getInt("flag");
+        turn_no =  savedInstanceState.getInt("turn_no");
+        selectedTurn = savedInstanceState.getBoolean("selectedturn");
+        mfirst_player_score = savedInstanceState.getInt("mfirst_player_score");
+        msecond_player_score = savedInstanceState.getInt("msecond_player_score");
+        ischecked = savedInstanceState.getBoolean("ischecked");
     }
     public void set_button(int pk,boolean ox){
         switch (pk){

@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
+import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
 import com.wordpress.milindkrohit.zerocrosstictactoe.R;
 import com.wordpress.milindkrohit.zerocrosstictactoe.mfragment;
@@ -41,11 +44,14 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     private OnFragmentInteractionListener mListener;
     private TextView first_player,first_player_score,second_player,second_player_score,game_result,player_turn;
     private ImageButton ibutton_1,ibutton_2,ibutton_3,ibutton_4,ibutton_5,ibutton_6,ibutton_7,ibutton_8,ibutton_9;
-    int arr[][],turn_no = 0,flag = 0;
-    boolean mturn,selectedTurn;
+    int arr[][],turn_no = 0,flag = 0,pairNo;
+    boolean mturn,selectedTurn,ischecked;
     int mfirst_player_score,msecond_player_score,mties;
     private Button replay;
-    String first_player_name,second_player_name;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
+    String first_player_name,second_player_name,saveInstance[] = {"ibutton_1","ibutton_2","ibutton_3","ibutton_4"
+            ,"ibutton_5","ibutton_6","ibutton_7","ibutton_8","ibutton_9"};
     public Mplayground() {
         // Required empty public constructor
     }
@@ -75,6 +81,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -91,13 +98,31 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         init();
         comm = (mfragment) getActivity();
         player_turn.setText(first_player_name + " turn");
+        if(savedInstanceState != null){
+           callSaveInstance(savedInstanceState);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                //int selectedId = radioGroup.getCheckedRadioButtonId();
+                if(!ischecked) {
+                    if (checkedId == R.id.radioButton_x) {
+                        selectedTurn = true;
+                        mturn = selectedTurn;
+                    } else {
+                        selectedTurn = false;
+                        mturn = selectedTurn;
+                    }
+                }
 
+            }
+        });
 
 
     }
    public void init(){
        AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
-       AdBuddiz.setTestModeActive();
+       AdBuddiz.setLogLevel(AdBuddizLogLevel.Info);
        AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
        AdBuddiz.cacheAds(getActivity());
        first_player = (TextView)getActivity().findViewById(R.id.first_player_name);
@@ -107,22 +132,24 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        game_result = (TextView)getActivity().findViewById(R.id.game_result);
        player_turn = (TextView)getActivity().findViewById(R.id.player_turn);
        replay = (Button)getActivity().findViewById(R.id.replay_button);
+       radioGroup = (RadioGroup)getActivity().findViewById(R.id.radio_group);
        Cursor rs = mydb.getData(1);
        rs.moveToFirst();
-
+       pairNo = rs.getInt(rs.getColumnIndex(DBHelper.PAIR));
+       if(!rs.isClosed())
+       rs.close();
+       rs = mydb.getData(pairNo);
+       rs.moveToFirst();
        mfirst_player_score = rs.getInt(rs.getColumnIndex(DBHelper.FIRST_PLAYER_SCORE));
        msecond_player_score = rs.getInt(rs.getColumnIndex(DBHelper.SECOND_PLAYER_SCORE));
        first_player_name = rs.getString(rs.getColumnIndex(DBHelper.FIRST_PLAYER));
        second_player_name = rs.getString(rs.getColumnIndex(DBHelper.SECOND_PLAYER));
        first_player.setText(first_player_name);
        second_player.setText(second_player_name);
-
-               mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
-       turn_no = rs.getInt(rs.getColumnIndex(DBHelper.TURN));
-       if( turn_no == 0) mturn = false;
-       else mturn = true;
-       selectedTurn = mturn;
+       mties =  rs.getInt(rs.getColumnIndex(DBHelper.TIES));
+       ischecked = false;
        turn_no = 0;
+       mturn = true;
        first_player_score.setText(String.format("%d",mfirst_player_score));
        second_player_score.setText(String.format("%d", msecond_player_score));
        ibutton_1 = (ImageButton) getActivity().findViewById(R.id.row1col1);
@@ -144,13 +171,14 @@ public class Mplayground extends Fragment implements View.OnClickListener {
        ibutton_8.setOnClickListener(this);
        ibutton_9.setOnClickListener(this);
        replay.setOnClickListener(this);
-
        arr = new int[3][3];
        for(int i =0;i<3;i++){
            for(int j=0;j<3;j++){
                arr[i][j] = 0;
            }
        }
+       if(!rs.isClosed())
+       rs.close();
    }
     public void checkResult(){
 
@@ -188,7 +216,7 @@ public class Mplayground extends Fragment implements View.OnClickListener {
             flag = arr[1][1];
         }
         if(flag != 0) {
-            if (selectedTurn) {
+
                 if(flag == 1) {
                     firstPlayerWins();
                 }else{
@@ -196,14 +224,6 @@ public class Mplayground extends Fragment implements View.OnClickListener {
                 }
 
 
-            } else {
-                if(flag == 2) {
-                    firstPlayerWins();
-                }else{
-                    secondPlayerWins();
-                }
-
-            }
             if(mfirst_player_score > msecond_player_score){
                 second_player_score.setTextColor(Color.RED);
                 first_player_score.setTextColor(Color.GREEN);
@@ -234,15 +254,73 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         second_player_score.setText(String.format("%d",msecond_player_score));
 
     }
-
-
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
         }
     }
-
+    public  void callSaveInstance(Bundle savedInstanceState){
+        int index = 0;
+        for(int i = 0;i < 3;i++){
+            for(int j = 0;j < 3;j++){
+                arr[i][j] = savedInstanceState.getInt(saveInstance[index]);
+                if(arr[i][j] == 1){
+                    set_button(index,true);
+                }else if(arr[i][j] == 2){
+                    set_button(index,false);
+                }
+                index++;
+            }
+        }
+        mturn = savedInstanceState.getBoolean("mturn");
+        flag =  savedInstanceState.getInt("flag");
+        turn_no =  savedInstanceState.getInt("turn_no");
+        selectedTurn = savedInstanceState.getBoolean("selectedturn");
+        mfirst_player_score = savedInstanceState.getInt("mfirst_player_score");
+        msecond_player_score = savedInstanceState.getInt("msecond_player_score");
+        ischecked = savedInstanceState.getBoolean("ischecked");
+    }
+    public void set_button(int pk,boolean ox){
+        switch (pk){
+            case 0:
+                if(ox) ibutton_1.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_1.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 1:
+                if(ox) ibutton_2.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_2.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 2:
+                if(ox) ibutton_3.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_3.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 3:
+                if(ox) ibutton_4.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_4.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 4:
+                if(ox) ibutton_5.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_5.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 5:
+                if(ox) ibutton_6.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_6.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 6:
+                if(ox) ibutton_7.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_7.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 7:
+                if(ox) ibutton_8.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_8.setBackgroundResource(R.drawable.ic_o);
+                break;
+            case 8:
+                if(ox) ibutton_9.setBackgroundResource(R.drawable.ic_x);
+                else ibutton_9.setBackgroundResource(R.drawable.ic_o);
+                break;
+        }
+    }
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -257,7 +335,31 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
+        Cursor rs = mydb.getData(pairNo);
+        rs.moveToFirst();
+        mydb.updateScore(pairNo, mfirst_player_score, msecond_player_score, mties);
+        if(!rs.isClosed()) rs.close();
         mListener = null;
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        int index = 0;
+        for(int i = 0;i < 3;i++){
+            for(int j = 0;j < 3;j++){
+                outState.putInt(saveInstance[index],arr[i][j]);
+                index++;
+            }
+        }
+        outState.putInt("mfirst_player_score",mfirst_player_score);
+        outState.putInt("msecond_player_score",msecond_player_score);
+        outState.putInt("turn_no",turn_no);
+        outState.putBoolean("mturn", mturn);
+        outState.putInt("flag", flag);
+        outState.putBoolean("selectedturn", selectedTurn);
+        outState.putBoolean("ischecked",ischecked);
+
     }
 
     @Override
@@ -425,15 +527,11 @@ public class Mplayground extends Fragment implements View.OnClickListener {
 
 
         }
-        if(selectedTurn) {
+
             if (mturn)
                 player_turn.setText(first_player.getText().toString() + "'s turn");
             else player_turn.setText(second_player.getText().toString() + "'s turn");
-        }else{
-            if (!mturn)
-                player_turn.setText(first_player.getText().toString() + "'s turn");
-            else player_turn.setText(second_player.getText().toString() + "'s turn");
-        }
+        if(turn_no > 0) ischecked = true;
         if(turn_no > 4 && flag == 0) checkResult();
     }
     public void replayGame(){
@@ -449,12 +547,14 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         ibutton_8.setBackgroundResource(R.drawable.ic_blank);
         ibutton_9.setBackgroundResource(R.drawable.ic_blank);
         flag = 0;
+        ischecked = false;
         game_result.setText("");
         for(int i=0;i<3;i++){
             for(int j=0;j<3;j++){
                 arr[i][j] = 0;
             }
         }
+
     }
 
     /**

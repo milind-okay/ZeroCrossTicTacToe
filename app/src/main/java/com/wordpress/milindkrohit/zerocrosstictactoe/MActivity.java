@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.support.v4.app.Fragment;
 import android.view.Menu;
@@ -16,16 +17,18 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
-        layout.aboutus.OnFragmentInteractionListener{
+        layout.aboutus.OnFragmentInteractionListener,layout.Statistics.OnFragmentInteractionListener{
 
-
+    int fragment_id = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -42,7 +45,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 fabonclick();
             }
         });
-        fragment_home();
+        if(savedInstanceState == null)  fragment_home();
     }
 
     @Override
@@ -76,6 +79,9 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         }else if(id  == R.id.rate_us){
             rate_us();
             return true;
+        }else if(id == R.id.statistics){
+            fragment_selector(4);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -89,9 +95,10 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         fragmentTransaction.commit();
     }
     @Override
-    public void fragment_selector(int fragmnet_id){
+    public void fragment_selector(int fragment){
         Fragment new_fragment;
-        switch (fragmnet_id){
+        fragment_id = fragment;
+        switch (fragment){
             case 1:
                 new_fragment = new layout.Home();
                 break;
@@ -102,6 +109,9 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 break;
             case 3:
                 new_fragment = new layout.aboutus();
+                break;
+            case 4:
+                new_fragment = new layout.Statistics();
                 break;
             default:
                 new_fragment = new layout.Home();
@@ -114,7 +124,11 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         fragmentTransaction.commit();
     }
 
-
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putInt("fragment_id",fragment_id);
+    }
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -128,6 +142,29 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     private void rate_us() {
         String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe\"";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
+    }
+    private void sendEmail(){
+
+        String info = "okay ",emailAdd;
+        emailAdd = "milind0359@gmail.com";
+        Log.i("Send email", "");
+        String emailaddress[] = {emailAdd};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("plane/text");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL,emailaddress);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "SudokuSolverAdvanced : state your subject here");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, info);
+
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+
+            Log.i("Finished sending email", "");
+        }
+        catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(MActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 

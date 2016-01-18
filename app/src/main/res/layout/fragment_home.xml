@@ -30,54 +30,12 @@
         android:layout_below="@id/first_player"
         android:hint="Second player"/>
 
-    <LinearLayout
-        android:id="@+id/checkbox"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/second_player"
-        android:layout_margin="30dp"
-        android:weightSum="100">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Start Piece:"
-            android:gravity="center"
-            android:layout_weight="30"/>
-        <RadioGroup
-            android:layout_weight="70"
-            android:id="@+id/radio_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center">
-    <RadioButton
 
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="X"
-        android:id="@+id/radioButton_x"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:checked="true"
-                />
-
-    <RadioButton
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="O"
-        android:id="@+id/radioButton_o"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-        </RadioGroup>
-    </LinearLayout>
     <Button
         android:id="@+id/home_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/checkbox"
+        android:layout_below="@id/second_player"
         android:hint="start"
 
         />

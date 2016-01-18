@@ -54,6 +54,40 @@
             android:textColor="@color/gameresult"
             android:paddingLeft="20dp"/>
     </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radio_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_margin="35dp"
+            android:weightSum="100">
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="X"
+                android:textSize="20dp"
+                android:id="@+id/radioButton_x"
+
+                android:checked="true"
+                android:paddingLeft="5dp"
+                android:layout_weight="70"
+                />
+
+            <RadioButton
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="O"
+                android:textSize="20dp"
+                android:id="@+id/radioButton_o"
+
+                android:layout_weight="20"
+
+                />
+        </RadioGroup>
+
+
 <FrameLayout
     android:layout_width="220dp"
     android:layout_height="220dp"

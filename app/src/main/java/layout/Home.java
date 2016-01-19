@@ -181,3 +181,4 @@ public class Home extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 }
+//TODO:app offers tablet-optimized UI and great features for tablet users

@@ -13,6 +13,8 @@
     <string name="action_rateus">Rate this App</string>
     <string name="action_favorite">Favorite</string>
     <string name="action_help">help</string>
+    <string name="ad_unit_ins">ca-app-pub-1615457502948469/6796212031</string>
+    <string name="ad_unit_banner">ca-app-pub-1615457502948469/5319478834 </string>
     <string name="action_contactus">contact us</string>
     <string name="statistics">statistics</string>
 </resources>

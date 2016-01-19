@@ -22,6 +22,8 @@ import com.wordpress.milindkrohit.zerocrosstictactoe.DBHelper;
 import com.wordpress.milindkrohit.zerocrosstictactoe.R;
 import com.wordpress.milindkrohit.zerocrosstictactoe.mfragment;
 
+import java.util.ResourceBundle;
+
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
@@ -245,8 +247,10 @@ public class Mplayground extends Fragment implements View.OnClickListener {
     }
     public  void firstPlayerWins(){
         game_result.setText(first_player.getText().toString() + "  wins");
+        game_result.setBackgroundResource(R.drawable.frame);
         mfirst_player_score++;
         first_player_score.setText(String.format("%d", mfirst_player_score));
+
     }
     public  void secondPlayerWins(){
         game_result.setText(second_player.getText().toString() + "  wins");
@@ -571,4 +575,5 @@ public class Mplayground extends Fragment implements View.OnClickListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
+
 }

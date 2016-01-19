@@ -19,13 +19,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 import com.purplebrain.adbuddiz.sdk.AdBuddiz;
 import com.purplebrain.adbuddiz.sdk.AdBuddizLogLevel;
 
 public class MActivity extends AppCompatActivity implements layout.Home.OnFragmentInteractionListener,layout.Mplayground.OnFragmentInteractionListener,mfragment,
-        layout.aboutus.OnFragmentInteractionListener,layout.Statistics.OnFragmentInteractionListener{
-
-    int fragment_id = 1;
+        layout.aboutus.OnFragmentInteractionListener{
+    private AdView mAdView;
+    int fragment_id = 1,backPress = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -33,16 +35,19 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         setContentView(R.layout.activity_m);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        mAdView.loadAd(adRequest);
         AdBuddiz.setPublisherKey("TEST_PUBLISHER_KEY");
         AdBuddiz.setLogLevel(AdBuddizLogLevel.Info);
         AdBuddiz.setPublisherKey("5daa68f5-3596-4893-8f20-5a11b054fb2b");
         AdBuddiz.cacheAds(this);
-        AdBuddiz.RewardedVideo.fetch(this);
+       // AdBuddiz.RewardedVideo.fetch(this);
         ImageButton fab = (ImageButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fabonclick();
+                fragment_selector(1);
             }
         });
         if(savedInstanceState == null)  fragment_home();
@@ -54,13 +59,13 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         getMenuInflater().inflate(R.menu.menu_m, menu);
         return true;
     }
-    public void fabonclick(){
+   /* public void fabonclick(){
         if (AdBuddiz.RewardedVideo.isReadyToShow(this)) { // this = current Activity
             AdBuddiz.RewardedVideo.show(this);
         }
 
         fragment_selector(1);
-    }
+    }*/
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -82,6 +87,8 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         }else if(id == R.id.statistics){
             fragment_selector(4);
             return true;
+        }else if(id == R.id.action_contactus){
+            sendEmail();
         }
 
         return super.onOptionsItemSelected(item);
@@ -111,7 +118,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
                 new_fragment = new layout.aboutus();
                 break;
             case 4:
-                new_fragment = new layout.Statistics();
+                new_fragment = new layout.ListScore();
                 break;
             default:
                 new_fragment = new layout.Home();
@@ -127,7 +134,7 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("fragment_id",fragment_id);
+        outState.putInt("fragment_id", fragment_id);
     }
 
     @Override
@@ -140,9 +147,22 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
     }
 
     private void rate_us() {
-        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe\"";
+        String str = "https://play.google.com/store/apps/details?id=com.wordpress.milindkrohit.zerocrosstictactoe";
         startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(str)));
     }
+
+    @Override
+    public void onBackPressed() {
+
+        if(fragment_id == 1){
+            backPress++;
+            if(backPress == 1)  Toast.makeText(this, "press again to exit", Toast.LENGTH_SHORT).show();
+            else super.onBackPressed();
+        }else{
+            fragment_selector(1);
+        }
+    }
+
     private void sendEmail(){
 
         String info = "okay ",emailAdd;
@@ -167,5 +187,27 @@ public class MActivity extends AppCompatActivity implements layout.Home.OnFragme
         }
     }
 
+    @Override
+    protected void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
 
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
+    }
 }
